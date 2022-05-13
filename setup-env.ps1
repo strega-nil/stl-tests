@@ -13,8 +13,8 @@ if ([String]::IsNullOrEmpty($Arch)) {
         $Arch = $names[0]
     }
     elseif ($names.Length -gt 1) {
-        if ('x64' -in $names) {
-            $Arch = 'x64'
+        if ('amd64' -in $names) {
+            $Arch = 'amd64'
         }
         elseif ('x86' -in $names) {
             $Arch = 'x86'
@@ -32,11 +32,14 @@ if ([String]::IsNullOrEmpty($Arch)) {
     }
 }
 
-$includes = "$BuildRoot/inc"
-$libs = "$BuildRoot/lib/$Arch"
+$include = "$BuildRoot/inc"
+$lib = "$BuildRoot/lib/$Arch"
+$bin = "$BuildRoot/bin/$Arch"
 
-Write-Host "Using include dir: $includes"
-Write-Host "Using lib dir    : $libs"
+Write-Host "Using include dir: $include"
+Write-Host "Using lib dir    : $lib"
+Write-Host "Using bin dir    : $bin"
 
-$env:INCLUDE = "$includes;$env:INCLUDE"
-$env:LIB = "$libs;$env:LIB"
+$env:INCLUDE = "$include;$env:INCLUDE"
+$env:LIB = "$lib;$env:LIB"
+$env:PATH = "$bin;$env:PATH"

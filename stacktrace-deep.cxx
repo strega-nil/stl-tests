@@ -3,7 +3,7 @@
 
 void print_stacktrace()
 {
-    auto s = std::stacktrace::current(10);
+    auto s = std::stacktrace::current();
     if (s.empty())
     {
         std::cout << "failed to initialize\n";

@@ -1,2 +1,5 @@
 *.exe
 *.obj
+*.tmp
+*.pdb
+*.ilk

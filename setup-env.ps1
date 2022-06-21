@@ -1,14 +1,13 @@
 [CmdletBinding()]
 Param(
-    [String]$BuildRoot,
+    [Parameter(Mandatory)]
+    [String]$Flavor,
     [String]$Arch
 )
 
-if ([String]::IsNullOrEmpty($BuildRoot)) {
-    $BuildRoot = (Get-Item "$PSScriptRoot/../stl/build/out").FullName
-}
+$buildRoot = (Get-Item "$PSScriptRoot/../stl/out/$Flavor/out" -ErrorAction Stop).FullName
 if ([String]::IsNullOrEmpty($Arch)) {
-    [String[]]$names = Get-ChildItem "$BuildRoot/lib" | ForEach-Object Name
+    [String[]]$names = Get-ChildItem "$buildRoot/lib" | ForEach-Object Name
     if ($names.Length -eq 1) {
         $Arch = $names[0]
     }
@@ -28,13 +27,13 @@ if ([String]::IsNullOrEmpty($Arch)) {
     }
     else {
         # $names.Length -eq 0
-        throw "Invalid build root $BuildRoot"
+        throw "Invalid build root $buildRoot"
     }
 }
 
-$include = "$BuildRoot/inc"
-$lib = "$BuildRoot/lib/$Arch"
-$bin = "$BuildRoot/bin/$Arch"
+$include = "$buildRoot/inc"
+$lib = "$buildRoot/lib/$Arch"
+$bin = "$buildRoot/bin/$Arch"
 
 Write-Host "Using include dir: $include"
 Write-Host "Using lib dir    : $lib"

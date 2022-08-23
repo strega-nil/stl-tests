@@ -13,7 +13,9 @@ Param (
   [Parameter(Mandatory=$False, ParameterSetName='STL')]
   [Switch]$STL,
   [Parameter(Mandatory=$True, ParameterSetName='LLVM')]
-  [Switch]$LLVM
+  [Switch]$LLVM,
+  [Parameter(Mandatory=$True, ParameterSetName='TR1')]
+  [Switch]$TR1
 )
 
 if ([String]::IsNullOrEmpty($Flavor)) {
@@ -27,6 +29,8 @@ if ([String]::IsNullOrEmpty($Flavor)) {
 $testSet = 'std'
 if ($LLVM) {
   $testSet = 'libcxx'
+} elseif ($TR1) {
+  $testSet = 'tr1'
 }
 
 cmake --build ./out/$Flavor

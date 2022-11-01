@@ -19,11 +19,12 @@ Param (
 )
 
 if ([String]::IsNullOrEmpty($Flavor)) {
-	if ($env:PROCESSOR_ARCHITECTURE -eq 'ARM64' -or $env:PROCESSOR_IDENTIFIER -match "ARMv[8,9] \(64-bit\)") {
-		$Flavor = 'arm64'
-	} else {
-		$Flavor = 'x64'
-	}
+  [String[]]$clVersion = cl 2>&1
+  if ($clVersion[0] -match 'Microsoft \(R\) C/C\+\+ Optimizing Compiler Version [0-9.]+ for (.*)') {
+    $Flavor = $Matches[1].ToLower()
+  } else {
+    throw "Unknown compiler"
+  }
 }
 
 $testSet = 'std'

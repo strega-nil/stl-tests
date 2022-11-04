@@ -20,10 +20,16 @@ Param (
 
 if ([String]::IsNullOrEmpty($Flavor)) {
   [String[]]$clVersion = cl 2>&1
-  if ($clVersion[0] -match 'Microsoft \(R\) C/C\+\+ Optimizing Compiler Version [0-9.]+ for (.*)') {
-    $Flavor = $Matches[1].ToLower()
+
+  [string[]]$versions = $clVersion | % {
+    if ($_ -match 'Microsoft \(R\) C/C\+\+ Optimizing Compiler Version [0-9.]+ for (.*)') {
+      $Matches[1].ToLower()
+    }
+  }
+  if ($versions.Length -eq 1) {
+    $Flavor = $versions[0]
   } else {
-    throw "Unknown compiler"
+    throw "Unknown compiler: $($clVersion -join "`n")"
   }
 }
 
